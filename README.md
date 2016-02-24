@@ -11,7 +11,7 @@ The project is maintained by a non-profit organisation called the **Ghost Founda
 - [Latest Release](https://ghost.org/download/)
 - [Support](http://support.ghost.org/)
 - [Theme Docs](http://themes.ghost.org)
-- [Contributing Guide](https://github.com/TryGhost/Ghost/blob/master/CONTRIBUTING.md)
+- [Contributing Guide](https://github.com/TryGhost/Ghost/blob/master/.github/CONTRIBUTING.md)
 - [Feature Requests](http://ideas.ghost.org/)
 - [Dev Blog](http://dev.ghost.org)
 
@@ -36,11 +36,11 @@ More [install docs](http://support.ghost.org/installation/) here in case you got
 <a name="getting-started"></a>
 # Developer Install (from git)
 
-Install Node.js.
+Install Node.js. (See [Supported Node.js versions](http://support.ghost.org/supported-node-versions/))
 
 ```bash
 # Node v0.10.x - recommended
-# Node v0.12.x and v4.2.x - supported
+# Node v0.12.x and v4.2+ LTS - supported
 #
 # Choose wisely
 ```

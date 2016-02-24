@@ -1,15 +1,19 @@
 import Ember from 'ember';
-import DS from 'ember-data';
+import RESTAdapter from 'ember-data/adapters/rest';
 import ghostPaths from 'ghost/utils/ghost-paths';
+import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
-const {inject} = Ember;
-const {RESTAdapter} = DS;
+const {
+    inject: {service}
+} = Ember;
 
-export default RESTAdapter.extend({
+export default RESTAdapter.extend(DataAdapterMixin, {
+    authorizer: 'authorizer:oauth2',
+
     host: window.location.origin,
     namespace: ghostPaths().apiRoot.slice(1),
 
-    session: inject.service('session'),
+    session: service(),
 
     shouldBackgroundReloadRecord() {
         return false;

@@ -1,10 +1,15 @@
 import Ember from 'ember';
-import {request as ajax} from 'ic-ajax';
 import isNumber from 'ghost/utils/isNumber';
 import boundOneWay from 'ghost/utils/bound-one-way';
 import ValidationEngine from 'ghost/mixins/validation-engine';
 
-const {Controller, RSVP, computed, inject, isArray} = Ember;
+const {
+    Controller,
+    RSVP,
+    computed,
+    inject: {service},
+    isArray
+} = Ember;
 const {alias, and, not, or, readOnly} = computed;
 
 export default Controller.extend(ValidationEngine, {
@@ -17,11 +22,12 @@ export default Controller.extend(ValidationEngine, {
     showUploadCoverModal: false,
     showUplaodImageModal: false,
 
-    dropdown: inject.service(),
-    ghostPaths: inject.service('ghost-paths'),
-    notifications: inject.service(),
-    session: inject.service(),
-    slugGenerator: inject.service('slug-generator'),
+    ajax: service(),
+    dropdown: service(),
+    ghostPaths: service(),
+    notifications: service(),
+    session: service(),
+    slugGenerator: service(),
 
     user: alias('model'),
     currentUser: alias('session.user'),
@@ -50,7 +56,7 @@ export default Controller.extend(ValidationEngine, {
 
     // duplicated in gh-user-active -- find a better home and consolidate?
     userDefault: computed('ghostPaths', function () {
-        return this.get('ghostPaths.url').asset('/shared/img/user-image.png');
+        return `${this.get('ghostPaths.subdir')}/ghost/img/user-image.png`;
     }),
 
     userImageBackground: computed('user.image', 'userDefault', function () {
@@ -61,7 +67,7 @@ export default Controller.extend(ValidationEngine, {
     // end duplicated
 
     coverDefault: computed('ghostPaths', function () {
-        return this.get('ghostPaths.url').asset('/shared/img/user-cover.png');
+        return `${this.get('ghostPaths.subdir')}/ghost/img/user-cover.png`;
     }),
 
     coverImageBackground: computed('user.cover', 'coverDefault', function () {
@@ -242,8 +248,7 @@ export default Controller.extend(ValidationEngine, {
 
             this.get('dropdown').closeDropdowns();
 
-            return ajax(url, {
-                type: 'PUT',
+            return this.get('ajax').put(url, {
                 data: {
                     owner: [{
                         id: user.get('id')
